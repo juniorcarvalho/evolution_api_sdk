@@ -1,8 +1,8 @@
 import requests
 from requests_toolbelt import MultipartEncoder
 
-from src.exception import EvolutionAuthenticationError, EvolutionNotFoundError, EvolutionAPIError
-from src.service.instance import InstanceService
+from evolution_api_sdk.exception import EvolutionAuthenticationError, EvolutionNotFoundError, EvolutionAPIError
+from evolution_api_sdk.service.instance import InstanceService
 
 
 class EvolutionClient:

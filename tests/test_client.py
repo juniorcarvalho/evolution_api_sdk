@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, Mock
-from src.client import EvolutionClient
-from src.exception import EvolutionAuthenticationError, EvolutionNotFoundError, EvolutionAPIError
+from evolution_api_sdk.client import EvolutionClient
+from evolution_api_sdk.exception import EvolutionAuthenticationError, EvolutionNotFoundError, EvolutionAPIError
 
 
 @pytest.fixture
@@ -9,7 +9,7 @@ def client():
     return EvolutionClient(base_url="http://fakeapi.com", api_token="fake_token")
 
 
-@patch('src.client.requests.get')
+@patch('evolution_api_sdk.client.requests.get')
 def test_get_success(mock_get, client):
     mock_response = Mock()
     mock_response.status_code = 200
@@ -28,7 +28,7 @@ def test_get_success(mock_get, client):
     )
 
 
-@patch('src.client.requests.get')
+@patch('evolution_api_sdk.client.requests.get')
 def test_get_authentication_error(mock_get, client):
     mock_response = Mock()
     mock_response.status_code = 401
@@ -39,7 +39,7 @@ def test_get_authentication_error(mock_get, client):
         client.get('endpoint')
 
 
-@patch('src.client.requests.get')
+@patch('evolution_api_sdk.client.requests.get')
 def test_get_not_found_error(mock_get, client):
     mock_response = Mock()
     mock_response.status_code = 404
@@ -50,7 +50,7 @@ def test_get_not_found_error(mock_get, client):
         client.get('endpoint')
 
 
-@patch('src.client.requests.get')
+@patch('evolution_api_sdk.client.requests.get')
 def test_get_api_error(mock_get, client):
     mock_response = Mock()
     mock_response.status_code = 500
@@ -61,7 +61,7 @@ def test_get_api_error(mock_get, client):
         client.get('endpoint')
 
 
-@patch('src.client.requests.get')
+@patch('evolution_api_sdk.client.requests.get')
 def test_get_non_json_response(mock_get, client):
     mock_response = Mock()
     mock_response.status_code = 200

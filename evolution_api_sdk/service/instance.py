@@ -1,4 +1,4 @@
-from src.models import PresenceConfig, PresenceStatus
+from evolution_api_sdk.models import PresenceConfig, PresenceStatus
 
 class InstanceService:
     def __init__(self, client):

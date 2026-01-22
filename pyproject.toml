@@ -53,7 +53,7 @@ packages = ["evolution_api_sdk"]
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "src/**/*.py",
+    "evolution_api_sdk/**/*.py",
     "README.md",
     "LICENSE",
 ]
