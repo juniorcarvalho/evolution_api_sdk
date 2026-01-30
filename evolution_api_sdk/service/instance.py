@@ -1,4 +1,6 @@
-from evolution_api_sdk.models import PresenceConfig, PresenceStatus
+from evolution_api_sdk.models import InstanceConfig, PresenceConfig, PresenceStatus
+from typing import Union, Dict, Any
+
 
 class InstanceService:
     def __init__(self, client):
@@ -16,9 +18,13 @@ class InstanceService:
         url = f'instance/delete/{instance_name}'
         return self.client.delete(url)
 
-    def create_instance(self, config:dict):
-        return self.client.post('instance/create', data=config)
-
+    def create_instance(self, config: Union[InstanceConfig, Dict[str, Any]]):
+        if hasattr(config, "to_dict"):
+            data = config.to_dict()
+        else:
+            data = config
+        return self.client.post("instance/create", data=data)
+        
     def connect_instance(self, instance_name: str):
         return self.client.get(f'instance/connect/{instance_name}')
 

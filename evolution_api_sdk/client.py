@@ -67,22 +67,15 @@ class EvolutionClient:
         headers = self._get_headers()
 
         if files:
-            # Remove o Content-Type do header quando enviando arquivos
-            if 'Content-Type' in headers:
-                del headers['Content-Type']
+            headers.pop("Content-Type", None)
 
-            # Prepara os campos do multipart
             fields = {}
-
-            # Adiciona os campos do data
             for key, value in data.items():
                 fields[key] = str(value) if not isinstance(value, (int, float)) else (None, str(value), 'text/plain')
 
-            # Adiciona o arquivo
             file_tuple = files['file']
             fields['file'] = (file_tuple[0], file_tuple[1], file_tuple[2])
 
-            # Cria o multipart encoder
             multipart = MultipartEncoder(fields=fields)
             headers['Content-Type'] = multipart.content_type
 
@@ -98,10 +91,10 @@ class EvolutionClient:
                 json=data
             )
 
-        return response.json()
+        return self._handle_response(response.json())
 
     def put(self, endpoint, data=None):
         """Faz uma requisição PUT."""
-        url = self._get_full_url(endpoint)
-        response = requests.put(url, headers=self.headers, json=data)
+        url = self._get_full_url(endpoint)        
+        response = requests.put(url, headers=self._get_headers, json=data)
         return self._handle_response(response)

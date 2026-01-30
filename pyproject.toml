@@ -1,6 +1,6 @@
 [project]
 name = "evolution-api-sdk"
-version = "0.1.0"
+version = "0.1.1"
 description = "SDK Python para integração com a Evolution API - WhatsApp API"
 readme = "README.md"
 license = { text = "MIT" }

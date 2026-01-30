@@ -1,8 +1,9 @@
-from .instance import InstanceConfig, PresenceStatus, PresenceConfig
+from .instance import InstanceConfig, PresenceStatus, PresenceConfig, WebhookConfig
 
 
 __all__ = [
     'InstanceConfig',
     'PresenceStatus',
-    'PresenceConfig'
+    'PresenceConfig',
+    'WebhookConfig'
 ]
