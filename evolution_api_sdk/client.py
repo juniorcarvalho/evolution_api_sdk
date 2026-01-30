@@ -23,6 +23,19 @@ class EvolutionClient:
         return f'{self.base_url}/{endpoint}'
 
     def _handle_response(self, response):
+        if not hasattr(response, 'status_code'):
+            try:
+                return response.json()
+            except ValueError:
+                return response.content
+            else:
+                try:
+                    error_detail = f' - {response.json()}'
+                except:
+                    error_detail = f' - {response.text}'
+                self.error = True
+                raise EvolutionAPIError(f'Erro na requisição: {response.status_code}{error_detail}')
+
         if response.status_code == 401:
             self.error = True
             raise EvolutionAuthenticationError('Falha na autenticação.')
@@ -91,7 +104,7 @@ class EvolutionClient:
                 json=data
             )
 
-        return self._handle_response(response.json())
+        return self._handle_response(response)
 
     def put(self, endpoint, data=None):
         """Faz uma requisição PUT."""
