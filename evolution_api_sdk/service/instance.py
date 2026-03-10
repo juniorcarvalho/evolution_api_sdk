@@ -6,7 +6,7 @@ class InstanceService:
     def __init__(self, client):
         self.client = client
 
-    def fetch_instances(self, instance_name:str=None):
+    def fetch_instances(self, instance_name: str = None):
         if instance_name:
             param = {'instanceName': instance_name}
         else:
@@ -14,17 +14,17 @@ class InstanceService:
         url = 'instance/fetchInstances/'
         return self.client.get(url, params=param)
 
-    def remove_instance(self, instance_name:str):
+    def remove_instance(self, instance_name: str):
         url = f'instance/delete/{instance_name}'
         return self.client.delete(url)
 
     def create_instance(self, config: Union[InstanceConfig, Dict[str, Any]]):
-        if hasattr(config, "to_dict"):
+        if hasattr(config, 'to_dict'):
             data = config.to_dict()
         else:
             data = config
-        return self.client.post("instance/create", data=data)
-        
+        return self.client.post('instance/create', data=data)
+
     def connect_instance(self, instance_name: str):
         return self.client.get(f'instance/connect/{instance_name}')
 

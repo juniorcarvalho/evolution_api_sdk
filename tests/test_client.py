@@ -6,7 +6,7 @@ from evolution_api_sdk.exception import EvolutionAuthenticationError, EvolutionN
 
 @pytest.fixture
 def client():
-    return EvolutionClient(base_url="http://fakeapi.com", api_token="fake_token")
+    return EvolutionClient(base_url='http://fakeapi.com', api_token='fake_token')
 
 
 @patch('evolution_api_sdk.client.requests.get')
@@ -24,7 +24,7 @@ def test_get_success(mock_get, client):
         'http://fakeapi.com/endpoint',
         headers={'apikey': 'fake_token', 'Content-Type': 'application/json'},
         params=None,
-        verify=False
+        verify=False,
     )
 
 
@@ -35,7 +35,7 @@ def test_get_authentication_error(mock_get, client):
     mock_response.ok = False
     mock_get.return_value = mock_response
 
-    with pytest.raises(EvolutionAuthenticationError, match="Falha na autenticação."):
+    with pytest.raises(EvolutionAuthenticationError, match='Falha na autenticação.'):
         client.get('endpoint')
 
 
@@ -46,7 +46,7 @@ def test_get_not_found_error(mock_get, client):
     mock_response.ok = False
     mock_get.return_value = mock_response
 
-    with pytest.raises(EvolutionNotFoundError, match="Recurso não encontrado."):
+    with pytest.raises(EvolutionNotFoundError, match='Recurso não encontrado.'):
         client.get('endpoint')
 
 
@@ -55,7 +55,7 @@ def test_get_api_error(mock_get, client):
     mock_response = Mock()
     mock_response.status_code = 500
     mock_response.ok = False
-    mock_response.text = "Erro Interno do Servidor"
+    mock_response.text = 'Erro Interno do Servidor'
     mock_get.return_value = mock_response
     with pytest.raises(EvolutionAPIError):
         client.get('endpoint')

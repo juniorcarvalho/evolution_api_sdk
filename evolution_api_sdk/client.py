@@ -1,8 +1,11 @@
+from typing import Optional
+
 import requests
 from requests_toolbelt import MultipartEncoder
 
-from evolution_api_sdk.exception import EvolutionAuthenticationError, EvolutionNotFoundError, EvolutionAPIError
+from evolution_api_sdk.exception import EvolutionAPIError, EvolutionAuthenticationError, EvolutionNotFoundError
 from evolution_api_sdk.service.instance import InstanceService
+from evolution_api_sdk.service.message import MessageService
 
 
 class EvolutionClient:
@@ -12,12 +15,10 @@ class EvolutionClient:
         self.base_url = base_url.rstrip('/')
         self.api_token = api_token
         self.instance = InstanceService(self)
+        self.message = MessageService(self)
 
     def _get_headers(self):
-        return {
-            'apikey': self.api_token,
-            'Content-Type': 'application/json'
-        }
+        return {'apikey': self.api_token, 'Content-Type': 'application/json'}
 
     def _get_full_url(self, endpoint):
         return f'{self.base_url}/{endpoint}'
@@ -63,7 +64,7 @@ class EvolutionClient:
             self.error = True
             raise EvolutionAPIError(f'Erro na requisição: {response.status_code}{error_detail}')
 
-    def get(self, endpoint: str, params = None):
+    def get(self, endpoint: str, params=None):
         """Faz uma requisição GET."""
         url = self._get_full_url(endpoint)
         response = requests.get(url, headers=self._get_headers(), params=params, verify=False)
@@ -75,12 +76,13 @@ class EvolutionClient:
         response = requests.delete(url, headers=self._get_headers())
         return self._handle_response(response)
 
-    def post(self, endpoint: str, data: dict = None, files: dict = None):
+    def post(self, endpoint: str, data: Optional[dict] = None, files: Optional[dict] = None):
         url = f'{self.base_url}/{endpoint}'
         headers = self._get_headers()
 
         if files:
-            headers.pop("Content-Type", None)
+            headers.pop('Content-Type', None)
+            data = data or {}
 
             fields = {}
             for key, value in data.items():
@@ -92,22 +94,14 @@ class EvolutionClient:
             multipart = MultipartEncoder(fields=fields)
             headers['Content-Type'] = multipart.content_type
 
-            response = requests.post(
-                url,
-                headers=headers,
-                data=multipart
-            )
+            response = requests.post(url, headers=headers, data=multipart)
         else:
-            response = requests.post(
-                url,
-                headers=headers,
-                json=data
-            )
+            response = requests.post(url, headers=headers, json=data)
 
         return self._handle_response(response)
 
     def put(self, endpoint, data=None):
         """Faz uma requisição PUT."""
-        url = self._get_full_url(endpoint)        
-        response = requests.put(url, headers=self._get_headers, json=data)
+        url = self._get_full_url(endpoint)
+        response = requests.put(url, headers=self._get_headers(), json=data)
         return self._handle_response(response)

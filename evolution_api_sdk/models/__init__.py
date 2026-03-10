@@ -1,9 +1,24 @@
-from .instance import InstanceConfig, PresenceStatus, PresenceConfig, WebhookConfig
-
+from .instance import InstanceConfig, PresenceConfig, PresenceStatus, WebhookConfig
+from .message import (
+    QuotedContentConfig,
+    QuotedKeyConfig,
+    QuotedMessageConfig,
+    SendMediaUrlMessageConfig,
+    SendNarratedAudioMessageConfig,
+    SendPtvMessageConfig,
+    SendTextMessageConfig,
+)
 
 __all__ = [
     'InstanceConfig',
     'PresenceStatus',
     'PresenceConfig',
-    'WebhookConfig'
+    'WebhookConfig',
+    'SendTextMessageConfig',
+    'SendMediaUrlMessageConfig',
+    'SendPtvMessageConfig',
+    'SendNarratedAudioMessageConfig',
+    'QuotedMessageConfig',
+    'QuotedKeyConfig',
+    'QuotedContentConfig',
 ]

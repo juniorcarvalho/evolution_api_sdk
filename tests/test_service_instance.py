@@ -17,16 +17,13 @@ def instance_service(mock_client):
 
 
 def test_fetch_instances_success(instance_service, mock_client):
-    mock_client.get.return_value = [
-        {"id": 1, "name": "Instance 1"},
-        {"id": 2, "name": "Instance 2"}
-    ]
+    mock_client.get.return_value = [{'id': 1, 'name': 'Instance 1'}, {'id': 2, 'name': 'Instance 2'}]
 
     response = instance_service.fetch_instances()
 
     assert len(response) == 2
-    assert response[0]["name"] == "Instance 1"
-    assert response[1]["name"] == "Instance 2"
+    assert response[0]['name'] == 'Instance 1'
+    assert response[1]['name'] == 'Instance 2'
 
     mock_client.get.assert_called_once_with('instance/fetchInstances/', params=None)
 
